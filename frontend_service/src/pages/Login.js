@@ -1,12 +1,13 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../context/AuthContext";
+import ToastContext from "../context/ToastContext";
 
 const Login = () => {
-    const {loginUser}= useContext(AuthContext)
+  const { toast } = useContext(ToastContext);
+  const { loginUser } = useContext(AuthContext);
+
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -20,49 +21,54 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-   
-    if(!credentials.email || credentials.password){
-        toast.error("Please enter all the require Fields")
-        return
+
+    if (!credentials.email || !credentials.password) {
+      toast.error("please enter all the required fields!");
+      return;
     }
 
-    loginUser(credentials)
+    loginUser(credentials);
   };
 
   return (
     <>
-    <ToastContainer autoclose={2000}/>
       <h3>Login</h3>
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="EmailInput">Email address</label>
+          <label htmlFor="emailInput" className="form-label mt-4">
+            Email address
+          </label>
           <input
             type="email"
             className="form-control"
-            id="exampleFormControlInput1"
-            placeholder="name@example.com"
+            id="emailInput"
+            aria-describedby="emailHelp"
             name="email"
             value={credentials.email}
             onChange={handleInputChange}
+            placeholder="johndoe@example.com"
             required
           />
         </div>
         <div className="form-group">
-          <label htmlFor="PasswordInput">Password</label>
+          <label htmlFor="passwordInput" className="form-label mt-4">
+            Password
+          </label>
           <input
-            type="password" // This should be "password" instead of "email"
+            type="password"
             className="form-control"
-            id="exampleFormControlInput2"
-            placeholder="Enter your password"
+            id="passwordInput"
             name="password"
             value={credentials.password}
             onChange={handleInputChange}
+            placeholder="Enter Password"
             required
           />
         </div>
-        <input type="submit" value="Login" className="btn btn-primary my-3" /> {/* This should be "submit" instead of "subimt" */}
+        <input type="submit" value="Login" className="btn btn-primary my-3" />
         <p>
-          Don't have an account? <Link to="/register">Create one</Link>
+          Don't have an account ? <Link to="/register">Create One</Link>
         </p>
       </form>
     </>
